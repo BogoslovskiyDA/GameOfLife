@@ -106,5 +106,31 @@ namespace GameOfLife
         {
             UpdateCell(x, y, state: false);
         }
+
+        public int LivingCells()
+        {
+            var lcells = 0;
+            for (int x = 0; x < cols; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    if (field[x, y])
+                        lcells++;
+                }
+            }
+            return lcells;
+        }
+
+        public void RemoveField()
+        {
+            for (int x = 0; x < cols; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    if (field[x, y])
+                        field[x, y] = false;
+                }
+            }
+        }
     }
 }
