@@ -21,31 +21,20 @@ namespace GameOfLife
             InitializeComponent();
             BPause.Enabled = false;
             BStop.Enabled = false;
+            MSSaveGame.Enabled = false;
         }
 
         private void StartGame()
         {
-            //if (Timer.Enabled)
-            //    return;
-
-            nudResolution.Enabled = false;
-            nudDensity.Enabled = false;
-            resolution = (int)nudResolution.Value;
             BPause.Enabled = true;
             BStop.Enabled = true;
+            MSSaveGame.Enabled = false;
             FormBorderStyle = FormBorderStyle.FixedSingle;
 
-            gameEngine = new GameEngine
-            (
-                rows: pictureBox.Height / resolution,
-                cols: pictureBox.Width / resolution,
-                density: (int)(nudDensity.Minimum) + (int)(nudDensity.Maximum) - (int)(nudDensity.Value)
-            );
+            NewGameEngine();
 
             Text = $"Generation {gameEngine.CurrentGeneration}";
 
-            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
-            graphics = Graphics.FromImage(pictureBox.Image);
             label3.Text = "Living Cells : " + gameEngine.LivingCells();
             label4.Text = "Generation : " + gameEngine.CurrentGeneration;
             Timer.Start();
@@ -54,8 +43,6 @@ namespace GameOfLife
         private void DrawNextGeneration()
         {
             graphics.Clear(Color.Black);
-
-            //Brush brushes = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
 
             var field = gameEngine.GetCurrentGeneration();
 
@@ -77,20 +64,19 @@ namespace GameOfLife
 
         private void StopGame()
         {
-            //if (!Timer.Enabled)
-            //    return;
             Timer.Stop();
             nudResolution.Enabled = true;
             nudDensity.Enabled = true;
             BStart.Enabled = true;
             BPause.Enabled = false;
+            MSSaveGame.Enabled = false;
             FormBorderStyle = FormBorderStyle.Sizable;
 
             gameEngine.RemoveField();
             graphics.Clear(SystemColors.Control);
             Text = "GameOfLife";
-            label3.Text = "Generation : 0";
-            label4.Text = "Living Cell : 0";
+            label3.Text = "Living Cells :";
+            label4.Text = "Generation :";
             GetStatistic();
         }
 
@@ -144,18 +130,91 @@ namespace GameOfLife
 
         private void BPause_Click(object sender, EventArgs e)
         {
-            BPause.Width = 37;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             if (Timer.Enabled)
             {
                 Timer.Stop();
-                //BStart.Enabled = true;
                 BPause.Text = "▶️";
+                MSSaveGame.Enabled = true;
             }
             else
             {
                 Timer.Start();
                 BPause.Text = "⏸️";
+                MSSaveGame.Enabled = false;
             }
+        }
+
+        private void MSSaveGame_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog save = new SaveFileDialog();
+                save.InitialDirectory = @"D:\";
+                save.RestoreDirectory = true;
+                save.FileName = "*.gol";
+                save.DefaultExt = "GOL";
+                save.Filter = "gol filter (*.gol)|*.gol";
+
+                if (save.ShowDialog() == DialogResult.OK)
+                    gameEngine.SaveGame(save.OpenFile(), (int)nudResolution.Value);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Saving error.\n" + ex.Message);
+            }
+        }
+
+        private void MSLoadGame_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog open = new OpenFileDialog();
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+                    if (gameEngine == null)
+                    {
+                        NewGameEngine();
+                    }
+                    resolution = gameEngine.LoadGame(open.OpenFile());
+                    nudResolution.Value = resolution;
+                    DrawNextGeneration();
+                    BPause.Enabled = true;
+                    BStop.Enabled = true;
+
+                    GetStatistic();
+
+                    if (Timer.Enabled)
+                        BPause_Click(sender,e);
+                    else
+                        BPause.Text = "▶️";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Loading error.\n" + ex.Message);
+            }
+        }
+
+        private void NewGameEngine()
+        {
+            nudResolution.Enabled = false;
+            nudDensity.Enabled = false;
+            resolution = (int)nudResolution.Value;
+            gameEngine = new GameEngine
+            (
+                rows: pictureBox.Height / resolution,
+                cols: pictureBox.Width / resolution,
+                density: (int)(nudDensity.Minimum) + (int)(nudDensity.Maximum) - (int)(nudDensity.Value)
+            );
+            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+            graphics = Graphics.FromImage(pictureBox.Image);
+        }
+
+        //TODO
+        private void MSOption_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("\"Option\" was in development");
         }
     }
 }

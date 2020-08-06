@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,8 @@ namespace GameOfLife
     {
         public uint CurrentGeneration { get; private set; }
         private bool[,] field;
-        private readonly int rows;
-        private readonly int cols;
+        private int rows;
+        private int cols;
 
         public GameEngine(int rows, int cols, int density)
         {
@@ -51,7 +52,7 @@ namespace GameOfLife
             CurrentGeneration++;
         }
 
-        public bool [,] GetCurrentGeneration()
+        public bool[,] GetCurrentGeneration()
         {
             var result = new bool[cols, rows];
             for (int x = 0; x < cols; x++)
@@ -130,6 +131,57 @@ namespace GameOfLife
                     if (field[x, y])
                         field[x, y] = false;
                 }
+            }
+        }
+
+        public void SaveGame(Stream stream, int resolution)
+        {
+            using (var streamWriter = new StreamWriter(stream))
+            {
+                streamWriter.WriteLine(resolution);
+                for (int x = 0; x < cols; x++)
+                {
+                    for (int y = 0; y < rows; y++)
+                    {
+                        if (field[x, y])
+                            streamWriter.Write(1);
+                        else
+                            streamWriter.Write(0);
+                    }
+                    streamWriter.WriteLine();
+                }
+            }
+        }
+
+        public int LoadGame(Stream stream)
+        {
+            using (var streamReader = new StreamReader(stream))
+            {
+                cols = 0;
+                rows = 0;
+                int resolution = int.Parse(streamReader.ReadLine());
+                while (!streamReader.EndOfStream)
+                {
+                    rows = streamReader.ReadLine().Length;
+                    cols++;
+                }
+                streamReader.BaseStream.Position = 0;
+                streamReader.ReadLine();
+
+                field = new bool[cols, rows];
+
+                for (int x = 0; x < cols; x++)
+                {
+                    var line = streamReader.ReadLine();
+                    for (int y = 0; y < rows; y++)
+                    {
+                        if (line[y].Equals('0'))
+                            field[x, y] = false;
+                        else
+                            field[x, y] = true;
+                    }
+                }
+                return resolution;
             }
         }
     }
