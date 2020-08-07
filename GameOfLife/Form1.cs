@@ -16,12 +16,20 @@ namespace GameOfLife
         private int resolution;
         private GameEngine gameEngine;
         Statistic statistic;
+        OptionForm optionForm;
+        //int Red = 255;
+        //int Blue = 255;
+        //int Green = 255;
+        //Color color;
+        //Brush brush;
         public Form1()
         {
             InitializeComponent();
             BPause.Enabled = false;
             BStop.Enabled = false;
             MSSaveGame.Enabled = false;
+            MaximizeBox = false;
+            MinimizeBox = false;
         }
 
         private void StartGame()
@@ -34,6 +42,9 @@ namespace GameOfLife
             NewGameEngine();
 
             Text = $"Generation {gameEngine.CurrentGeneration}";
+
+            //color = Color.FromArgb(255, Red, Green, Blue);
+            //brush = new SolidBrush(color);
 
             label3.Text = "Living Cells : " + gameEngine.LivingCells();
             label4.Text = "Generation : " + gameEngine.CurrentGeneration;
@@ -214,7 +225,10 @@ namespace GameOfLife
         //TODO
         private void MSOption_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("\"Option\" was in development");
+            optionForm = new OptionForm(this, Timer);
+            //optionForm.brush = this.brush;
+            optionForm.Show();
+            //MessageBox.Show("\"Option\" was in development");
         }
     }
 }

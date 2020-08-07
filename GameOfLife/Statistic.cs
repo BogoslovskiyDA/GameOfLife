@@ -26,6 +26,8 @@ namespace GameOfLife
         public Statistic()
         {
             InitializeComponent();
+            MaximizeBox = false;
+            MinimizeBox = false;
             HeightDiagram = diagram.Height;
             DrawCanvas();
         }
