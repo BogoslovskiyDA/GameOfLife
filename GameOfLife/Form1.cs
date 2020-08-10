@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GameOfLife
@@ -17,11 +11,8 @@ namespace GameOfLife
         private GameEngine gameEngine;
         Statistic statistic;
         OptionForm optionForm;
-        //int Red = 255;
-        //int Blue = 255;
-        //int Green = 255;
-        //Color color;
-        //Brush brush;
+        public MyBrushColor myBrush = new MyBrushColor(255, 255, 255);
+        Brush brush;
         public Form1()
         {
             InitializeComponent();
@@ -37,23 +28,22 @@ namespace GameOfLife
             BPause.Enabled = true;
             BStop.Enabled = true;
             MSSaveGame.Enabled = false;
+            BPause.Text = "⏸️";
             FormBorderStyle = FormBorderStyle.FixedSingle;
 
             NewGameEngine();
 
-            Text = $"Generation {gameEngine.CurrentGeneration}";
+            brush = new SolidBrush(Color.FromArgb(255, myBrush.Red, myBrush.Green, myBrush.Blue));
 
-            //color = Color.FromArgb(255, Red, Green, Blue);
-            //brush = new SolidBrush(color);
-
-            label3.Text = "Living Cells : " + gameEngine.LivingCells();
-            label4.Text = "Generation : " + gameEngine.CurrentGeneration;
+            LivingCellsText.Text = "Living Cells : " + gameEngine.LivingCells();
+            GenerationText.Text = "Generation : " + gameEngine.CurrentGeneration;
             Timer.Start();
         }
 
         private void DrawNextGeneration()
         {
             graphics.Clear(Color.Black);
+            brush = new SolidBrush(Color.FromArgb(255, myBrush.Red, myBrush.Green, myBrush.Blue));
 
             var field = gameEngine.GetCurrentGeneration();
 
@@ -62,14 +52,13 @@ namespace GameOfLife
                 for (int y = 0; y < field.GetLength(1); y++)
                 {
                     if (field[x, y])
-                        graphics.FillRectangle(Brushes.White, x * resolution, y * resolution, resolution - 1, resolution - 1);
+                        graphics.FillRectangle(brush, x * resolution, y * resolution, resolution - 1, resolution - 1);
                 }
             }
 
             pictureBox.Refresh();
-            Text = $"Generation {gameEngine.CurrentGeneration}";
-            label3.Text = "Living Cells : " + gameEngine.LivingCells();
-            label4.Text = "Generation : " + gameEngine.CurrentGeneration;
+            LivingCellsText.Text = "Living Cells : " + gameEngine.LivingCells();
+            GenerationText.Text = "Generation : " + gameEngine.CurrentGeneration;
             gameEngine.NextGeneration();
         }
 
@@ -81,13 +70,14 @@ namespace GameOfLife
             BStart.Enabled = true;
             BPause.Enabled = false;
             MSSaveGame.Enabled = false;
+            BPause.Text = "⏸️";
             FormBorderStyle = FormBorderStyle.Sizable;
 
             gameEngine.RemoveField();
             graphics.Clear(SystemColors.Control);
             Text = "GameOfLife";
-            label3.Text = "Living Cells :";
-            label4.Text = "Generation :";
+            LivingCellsText.Text = "Living Cells :";
+            GenerationText.Text = "Generation :";
             GetStatistic();
         }
 
@@ -168,7 +158,7 @@ namespace GameOfLife
                 save.Filter = "gol filter (*.gol)|*.gol";
 
                 if (save.ShowDialog() == DialogResult.OK)
-                    gameEngine.SaveGame(save.OpenFile(), (int)nudResolution.Value);
+                    gameEngine.SaveGame(save.OpenFile(), (int)nudResolution.Value, (int)nudDensity.Value,this.Width, this.Height);
             }
             catch (Exception ex)
             {
@@ -183,22 +173,35 @@ namespace GameOfLife
                 OpenFileDialog open = new OpenFileDialog();
                 if (open.ShowDialog() == DialogResult.OK)
                 {
+                    if (Timer.Enabled)
+                        BPause_Click(sender, e);
+                    else
+                        BPause.Text = "▶️";
+
                     if (gameEngine == null)
                     {
                         NewGameEngine();
                     }
-                    resolution = gameEngine.LoadGame(open.OpenFile());
+
+                    int with = Width;
+                    int height = Height;
+                    int density = (int)nudDensity.Value;
+                    gameEngine.LoadGame(open.OpenFile(), ref resolution, ref density, ref with, ref height);
+
+                    if (with != Width)
+                    {
+                        Width = with;
+                        Height = height;
+                        MessageBox.Show($"The game was saved in a different resolution {with}X{height}.\nForced permission change.");
+                    }
+
                     nudResolution.Value = resolution;
+                    nudDensity.Value = density;
                     DrawNextGeneration();
                     BPause.Enabled = true;
                     BStop.Enabled = true;
 
                     GetStatistic();
-
-                    if (Timer.Enabled)
-                        BPause_Click(sender,e);
-                    else
-                        BPause.Text = "▶️";
                 }
             }
             catch (Exception ex)
@@ -222,13 +225,10 @@ namespace GameOfLife
             graphics = Graphics.FromImage(pictureBox.Image);
         }
 
-        //TODO
         private void MSOption_Click(object sender, EventArgs e)
         {
-            optionForm = new OptionForm(this, Timer);
-            //optionForm.brush = this.brush;
+            optionForm = new OptionForm(this, Timer, myBrush);
             optionForm.Show();
-            //MessageBox.Show("\"Option\" was in development");
         }
     }
 }

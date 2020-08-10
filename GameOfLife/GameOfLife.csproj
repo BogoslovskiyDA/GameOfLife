@@ -54,6 +54,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GameEngine.cs" />
+    <Compile Include="MyBrushColor.cs" />
     <Compile Include="OptionForm.cs">
       <SubType>Form</SubType>
     </Compile>

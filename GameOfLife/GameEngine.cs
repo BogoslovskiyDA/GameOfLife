@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameOfLife
 {
@@ -134,11 +130,13 @@ namespace GameOfLife
             }
         }
 
-        public void SaveGame(Stream stream, int resolution)
+        public void SaveGame(Stream stream, int resolution, int density, int with, int height)
         {
             using (var streamWriter = new StreamWriter(stream))
             {
                 streamWriter.WriteLine(resolution);
+                streamWriter.WriteLine(density);
+                streamWriter.WriteLine($"{with}X{height}");
                 for (int x = 0; x < cols; x++)
                 {
                     for (int y = 0; y < rows; y++)
@@ -153,19 +151,25 @@ namespace GameOfLife
             }
         }
 
-        public int LoadGame(Stream stream)
+        public void LoadGame(Stream stream, ref int resolution, ref int density, ref int with, ref int height)
         {
             using (var streamReader = new StreamReader(stream))
             {
                 cols = 0;
                 rows = 0;
-                int resolution = int.Parse(streamReader.ReadLine());
+                resolution = int.Parse(streamReader.ReadLine());
+                density = int.Parse(streamReader.ReadLine());
+                var size = streamReader.ReadLine().Split('X');
+                with = int.Parse(size[0]);
+                height = int.Parse(size[1]);
                 while (!streamReader.EndOfStream)
                 {
                     rows = streamReader.ReadLine().Length;
                     cols++;
                 }
                 streamReader.BaseStream.Position = 0;
+                streamReader.ReadLine();
+                streamReader.ReadLine();
                 streamReader.ReadLine();
 
                 field = new bool[cols, rows];
@@ -181,7 +185,6 @@ namespace GameOfLife
                             field[x, y] = true;
                     }
                 }
-                return resolution;
             }
         }
     }

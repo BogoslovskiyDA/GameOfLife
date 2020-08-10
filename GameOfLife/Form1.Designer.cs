@@ -30,16 +30,16 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label4 = new System.Windows.Forms.Label();
+            this.GenerationText = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.ResolutionText = new System.Windows.Forms.Label();
             this.BPause = new System.Windows.Forms.Button();
             this.nudResolution = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
+            this.DensityText = new System.Windows.Forms.Label();
             this.nudDensity = new System.Windows.Forms.NumericUpDown();
             this.BStop = new System.Windows.Forms.Button();
             this.BStart = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.LivingCellsText = new System.Windows.Forms.Label();
             this.ShowStatistic = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.MSSaveGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,9 +73,9 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainer1.Panel1.Controls.Add(this.label4);
+            this.splitContainer1.Panel1.Controls.Add(this.GenerationText);
             this.splitContainer1.Panel1.Controls.Add(this.panel1);
-            this.splitContainer1.Panel1.Controls.Add(this.label3);
+            this.splitContainer1.Panel1.Controls.Add(this.LivingCellsText);
             this.splitContainer1.Panel1.Controls.Add(this.ShowStatistic);
             this.splitContainer1.Panel1.Controls.Add(this.menuStrip);
             // 
@@ -86,24 +86,24 @@
             this.splitContainer1.SplitterDistance = 220;
             this.splitContainer1.TabIndex = 0;
             // 
-            // label4
+            // GenerationText
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(14, 364);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(92, 16);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Generation :";
+            this.GenerationText.AutoSize = true;
+            this.GenerationText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GenerationText.Location = new System.Drawing.Point(14, 364);
+            this.GenerationText.Name = "GenerationText";
+            this.GenerationText.Size = new System.Drawing.Size(92, 16);
+            this.GenerationText.TabIndex = 10;
+            this.GenerationText.Text = "Generation :";
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.ResolutionText);
             this.panel1.Controls.Add(this.BPause);
             this.panel1.Controls.Add(this.nudResolution);
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.DensityText);
             this.panel1.Controls.Add(this.nudDensity);
             this.panel1.Controls.Add(this.BStop);
             this.panel1.Controls.Add(this.BStart);
@@ -112,15 +112,15 @@
             this.panel1.Size = new System.Drawing.Size(203, 257);
             this.panel1.TabIndex = 9;
             // 
-            // label1
+            // ResolutionText
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(31, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 16);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Resolution";
+            this.ResolutionText.AutoSize = true;
+            this.ResolutionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ResolutionText.Location = new System.Drawing.Point(31, 11);
+            this.ResolutionText.Name = "ResolutionText";
+            this.ResolutionText.Size = new System.Drawing.Size(82, 16);
+            this.ResolutionText.TabIndex = 0;
+            this.ResolutionText.Text = "Resolution";
             // 
             // BPause
             // 
@@ -136,6 +136,7 @@
             // 
             // nudResolution
             // 
+            this.nudResolution.Cursor = System.Windows.Forms.Cursors.Hand;
             this.nudResolution.Location = new System.Drawing.Point(34, 39);
             this.nudResolution.Maximum = new decimal(new int[] {
             25,
@@ -157,18 +158,19 @@
             0,
             0});
             // 
-            // label2
+            // DensityText
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(31, 77);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 16);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Density";
+            this.DensityText.AutoSize = true;
+            this.DensityText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.DensityText.Location = new System.Drawing.Point(31, 77);
+            this.DensityText.Name = "DensityText";
+            this.DensityText.Size = new System.Drawing.Size(60, 16);
+            this.DensityText.TabIndex = 2;
+            this.DensityText.Text = "Density";
             // 
             // nudDensity
             // 
+            this.nudDensity.Cursor = System.Windows.Forms.Cursors.Hand;
             this.nudDensity.Location = new System.Drawing.Point(34, 105);
             this.nudDensity.Maximum = new decimal(new int[] {
             25,
@@ -214,15 +216,15 @@
             this.BStart.UseVisualStyleBackColor = true;
             this.BStart.Click += new System.EventHandler(this.BStart_Click);
             // 
-            // label3
+            // LivingCellsText
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(14, 330);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 16);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Living Cells :";
+            this.LivingCellsText.AutoSize = true;
+            this.LivingCellsText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LivingCellsText.Location = new System.Drawing.Point(14, 330);
+            this.LivingCellsText.Name = "LivingCellsText";
+            this.LivingCellsText.Size = new System.Drawing.Size(96, 16);
+            this.LivingCellsText.TabIndex = 7;
+            this.LivingCellsText.Text = "Living Cells :";
             // 
             // ShowStatistic
             // 
@@ -332,19 +334,19 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.NumericUpDown nudResolution;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label ResolutionText;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button BStop;
         private System.Windows.Forms.Button BStart;
         private System.Windows.Forms.NumericUpDown nudDensity;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label DensityText;
         private System.Windows.Forms.Timer Timer;
         private System.Windows.Forms.Button ShowStatistic;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label LivingCellsText;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button BPause;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label GenerationText;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem MSSaveGame;
         private System.Windows.Forms.ToolStripMenuItem MSLoadGame;
